@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using CheeseMVC.Data;
 using Microsoft.EntityFrameworkCore;
+using CheeseMVC.Models;
 
 namespace CheeseMVC
 {
@@ -33,8 +34,13 @@ namespace CheeseMVC
             services.AddDbContext<CheeseDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            //services.AddDbContext<CheeseDbContext>(options =>
+              //  options.UseSqlServer(Configuration.GetConnectionString("ModConnection")));
+
             // Add framework services.
             services.AddMvc();
+            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,5 +69,8 @@ namespace CheeseMVC
             });
             context.Database.EnsureCreated();
         }
+
+
+
     }
 }
