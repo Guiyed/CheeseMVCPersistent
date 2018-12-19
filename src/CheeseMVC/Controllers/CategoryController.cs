@@ -19,9 +19,9 @@ namespace CheeseMVC.Controllers
 
         public IActionResult Index()
         {
-            List<CheeseCategory> cat = context.Categories.ToList();
+            List<CheeseCategory> categories = context.Categories.ToList();
 
-            return View(cat);
+            return View(categories);
         }
 
         public IActionResult Add()
