@@ -33,12 +33,12 @@ namespace CheeseMVC.Controllers
 
         [HttpPost]
         public IActionResult Add(AddCheeseViewModel addCheeseViewModel)
-        {       
+        {
             if (ModelState.IsValid)
             {
                 CheeseCategory newCheeseCategory =
                     context.Categories.Single(c => c.ID == addCheeseViewModel.CategoryID);
-                
+
                 // Add the new cheese to my existing cheeses
                 Cheese newCheese = new Cheese
                 {
@@ -47,7 +47,7 @@ namespace CheeseMVC.Controllers
                     Category = newCheeseCategory
                 };
 
-                
+
 
                 context.Cheeses.Add(newCheese);
                 context.SaveChanges();
@@ -77,6 +77,55 @@ namespace CheeseMVC.Controllers
             context.SaveChanges();
 
             return Redirect("/");
+        }
+
+        public IActionResult Edit(int cheeseId)
+        {
+            Cheese cheeseToEdit = context.Cheeses.Single(c => c.ID == cheeseId);
+            EditCheeseViewModel editCheeseViewModel = new EditCheeseViewModel(context.Categories.ToList())
+            {
+                Name = cheeseToEdit.Name,
+                Description = cheeseToEdit.Description,
+                CategoryID = cheeseToEdit.CategoryID,
+                CheeseID = cheeseToEdit.ID
+            };
+
+            return View(editCheeseViewModel);   
+        }
+
+        [HttpPost]
+        public IActionResult Edit(EditCheeseViewModel modCheese)
+        {
+            if (ModelState.IsValid)
+            {
+                Cheese cheeseToEdit = context.Cheeses.Single(c => c.ID == modCheese.CheeseID);
+
+                CheeseCategory newCheeseCategory =
+                    context.Categories.Single(c => c.ID == modCheese.CategoryID);
+
+                // Modify the cheese with new information
+                cheeseToEdit.Name = modCheese.Name;
+                cheeseToEdit.Description = modCheese.Description;
+                cheeseToEdit.Category = newCheeseCategory;
+
+
+                /*Cheese modifiedCheese = new Cheese
+                {
+                    Name = modCheese.Name,
+                    Description = modCheese.Description,
+                    Category = newCheeseCategory
+                };*/
+
+
+                context.Cheeses.Update(cheeseToEdit);
+                context.SaveChanges();
+
+                return Redirect("/");
+
+
+            }
+            return View(modCheese);
+
         }
     }
 }

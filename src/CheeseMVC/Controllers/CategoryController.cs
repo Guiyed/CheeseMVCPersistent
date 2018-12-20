@@ -66,7 +66,7 @@ namespace CheeseMVC.Controllers
 
             context.SaveChanges();
 
-            return Redirect("/");
+            return Redirect("/Category");
         }
 
 
